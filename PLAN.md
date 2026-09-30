@@ -23,7 +23,7 @@
 - 实测到的 Pi 行为：resume 会追加一条 `thinking_level_change`；RPC `fork` 在新会话上触发两次 `session_start(fork)`（两次补足都跑，第二次无新增）。
 - 实现注意：FTS5 external content 的 `'delete'` 命令之后 `last_insert_rowid` 超出 2^53，`node:sqlite` 默认按 number 读会抛错，这类语句要开 BigInt 读取。
 - 速度（9-30，lme-bench dfde3500，luna high，2 万 token 叶子）：不预摘要时一次压缩 18–21 次调用、590–900 s（原生约 40 s）。hermes-lcm 默认每次触发最多做 1 片叶子、每层最多 1 组合并，从窗口 35% 起逐轮分摊（`compaction.py:515`、`engine.py:5587`），不是一次性吞下整段积压。开后台预摘要后：25 万 token 积压后台 550 s 追平（每批 4 路），随后压缩只剩 1 次调用、49 s。单次摘要调用拆开看：首个事件约 2 s（不排队）；high 先思考约 30 s 才出正文；正文 35–50 token/s；叶子目标按原文 20%（约 4k token）写，输出本身就要 80–100 s；不开思考时模型只写约 0.6–1.2k token、18–23 s。8 路并行墙钟 70 s，总吞吐约 165 token/s。
-- 摘要思考档位与质量（9-30）：LongMemEval_M 里证据全落在同一片 2 万 token 叶子里的 24 题（单会话 user / assistant / preference 各 8），用插件的叶子提示词分别以不传思考、low、high 摘要，再由 luna xhigh 判"只看摘要能否答对"：不传 10/24（中位 25 s、约 1.2k token），low 16/24（39 s、1.9k），high 19/24（69 s、2.7k）。assistant 说过的细节即使 high 也只留住 3/8，这类要靠 grep/expand 回原文。每档各跑一次，未测方差。结论：摘要保留 high，提速靠后台预摘要和并行，不靠降档。hermes-lcm 在作者的 Hermes 里走辅助任务 compression（clp gpt-5.6-luna，未配 `reasoning_effort`，请求不带思考参数），相当于"不传"这一档；gpt-5.6-luna 本身未单测。
+- 摘要思考档位与质量（9-30）：LongMemEval_M 里证据全落在同一片 2 万 token 叶子里的 24 题（单会话 user / assistant / preference 各 8），用插件的叶子提示词分别以不传思考、low、high 摘要，再由 luna xhigh 判"只看摘要能否答对"：不传 10/24（中位 25 s、约 1.2k token），low 16/24（39 s、1.9k），high 19/24（69 s、2.7k）。assistant 说过的细节即使 high 也只留住 3/8，这类要靠 grep/expand 回原文。每档各跑一次，未测方差。结论：摘要保留 high，提速靠后台预摘要和并行，不靠降档。
 
 ## 核心
 
