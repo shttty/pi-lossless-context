@@ -1,6 +1,6 @@
 # pi-lossless-context
 
-把 hermes-lcm 的无损上下文思路移植成 Pi 扩展（Pi SDK 0.85.1），作为作者自己 agent 的默认上下文压缩。设计与已验证结论见 `PLAN.md`；早期 spike 与检索/分词对比实验在 `prototype/`。
+把 [hermes-lcm](https://github.com/stephenschoettler/hermes-lcm)（Stephen Schoettler，MIT）的无损上下文设计移植成 Pi 扩展（Pi SDK 0.85.1），作为作者自己 agent 的默认上下文压缩。代码是新写的 TypeScript，主体设计来自 hermes-lcm，版权与许可声明见 `THIRD_PARTY_NOTICES.md`。设计与已验证结论见 `PLAN.md`；早期 spike 与检索/分词对比实验在 `prototype/`。
 
 ## 口径
 
@@ -32,4 +32,4 @@
 
 ## 参考
 
-- 上游 [hermes-lcm](https://github.com/stephenschoettler/hermes-lcm)（MIT），参考版本 `8d1b1e6d3d63f5fc7b209e8d7ec1dc9b814f2e54`（v1.0.0-rc.1）。本地快照放在 `references/hermes-lcm/`，不进仓库；文中的 `engine.py:5587` 等行号都指这个版本。
+- 上游 [hermes-lcm](https://github.com/stephenschoettler/hermes-lcm)（MIT，声明见 `THIRD_PARTY_NOTICES.md`），参考版本 `8d1b1e6d3d63f5fc7b209e8d7ec1dc9b814f2e54`（v1.0.0-rc.1）。本地快照放在 `references/hermes-lcm/`，不进仓库；文中的 `engine.py:5587` 等行号都指这个版本。
