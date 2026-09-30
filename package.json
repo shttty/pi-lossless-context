@@ -1,0 +1,20 @@
+{
+  "name": "pi-lossless-context",
+  "version": "0.0.0",
+  "private": true,
+  "description": "PROTOTYPE: lossless context for Pi — one SQLite file with a slim session copy + FTS (grep/expand/session search) and summary-DAG compaction",
+  "type": "module",
+  "keywords": ["pi-package"],
+  "pi": {
+    "extensions": ["./src/index.ts"]
+  },
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "cli": "node src/cli.ts"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "0.85.1",
+    "@types/node": "^24.13.5",
+    "typescript": "^5.9.3"
+  }
+}

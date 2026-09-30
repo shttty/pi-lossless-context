@@ -1,0 +1,19 @@
+{
+  "//": "PROTOTYPE — resolves the repo's own Pi SDK 0.85.1 (../node_modules) for type checking only.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "paths": {
+      "@earendil-works/pi-coding-agent": ["../node_modules/@earendil-works/pi-coding-agent/dist/index.d.ts"],
+      "@earendil-works/*": ["../node_modules/@earendil-works/*"]
+    },
+    "typeRoots": ["../node_modules/@types"]
+  },
+  "include": ["**/*.ts"]
+}
